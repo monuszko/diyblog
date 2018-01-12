@@ -4,10 +4,10 @@
 <h1>{{ author.username }}</h1>
 
 <ul>
-    {% for bp in author.blogpost_set.all %}
-        <li>{{ bp.title }}</li>
-    {% empty %}
-        <li>No posts at this time.</li>
-    {% endfor %}
+{% for bp in author.blogpost_set.all %}
+    <li>{{ bp.title }}</li>
+{% empty %}
+    <li>No posts at this time.</li>
+{% endfor %}
 </ul>
 {% endblock content %}
