@@ -14,7 +14,10 @@ class BlogPostDetail(DetailView):
 
 class AuthorList(ListView):
     model = Author
+    template_name = 'blog/author_list.html'
+    context_object_name = 'author_list'
 
 
 class AuthorDetail(DetailView):
     model = Author
+    template_name = 'blog/author_detail.html'

@@ -1,9 +1,15 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.utils import timezone
 
 
+class AuthorManager(models.Manager):
+    def get_queryset(self):
+        return Group.objects.get(name='Bloggers').user_set.all()
+
 class Author(User):
+    objects = AuthorManager()
+
     class Meta:
         proxy = True
 
