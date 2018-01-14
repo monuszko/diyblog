@@ -1,14 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
 from django.utils import timezone
+from django.urls import reverse
 
 
 class AuthorManager(models.Manager):
     def get_queryset(self):
-        return Group.objects.get(name='Bloggers').user_set.all()
+        return super().get_queryset().filter(groups__name='Bloggers')
 
 class Author(User):
     objects = AuthorManager()
+
+    def get_absolute_url(self):
+        return reverse("blog:author_detail", args=[self.pk])
 
     class Meta:
         proxy = True
@@ -29,7 +33,7 @@ class BlogPost(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("blog:post_detail", args=[self.id])
+        return reverse("blog:post_detail", args=[self.pk])
 
     class Meta:
         ordering = ['-pub_date']

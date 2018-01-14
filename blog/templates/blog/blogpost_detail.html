@@ -1,0 +1,18 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<h1>{{ blogpost.title }}</h1>
+<p>by {{ blogpost.author }} on {{ blogpost.pub_date }}</p>
+{{ blogpost.content }}
+<h2>Comments:</h2>
+<ul>
+    {% for com in blogpost.comment_set.all %}
+    <li>
+        <p>{{ com.content }}</p>
+        <p>{{ com.author }} on {{ com.pub_date }}</p>
+    </li>
+    {% empty %}
+    <li><p>No comments.</p></li>
+    {% endfor %}
+</ul>
+{% endblock content %}

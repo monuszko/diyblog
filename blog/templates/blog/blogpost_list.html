@@ -1,15 +1,15 @@
 {% extends "blog/base.html" %}
 
 {% block content %}
-<h1>Simple Blog Home</h1>
+<h1>All blog posts</h1>
 <p>Welcome to <em>Simple Blog</em>, a very basic Django website developed as a tutorial example on the Mozilla Developer Network.</p>
 
 <ul>
 {% for bp in blogpost_list %}
-    {{ bp.title }}
+<li><a href="{{ bp.get_absolute_url }}">{{ bp.title }}</a> on {{ bp.pub_date }} by <a href="{{ bp.author.get_absolute_url }}">{{ bp.author }}</a></li>
 {% empty %}
     <li>No posts at this time.</li> 
 {% endfor %}
 </ul>
-{% endblock %}
+{% endblock content  %}
 

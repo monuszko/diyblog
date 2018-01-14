@@ -1,0 +1,14 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<h1>Simple Blog Home</h1>
+<p>A simple blog app as an exercise. Requirements at the end of Mozilla Django
+tutorial.</p>
+<p>The site currently contains:
+<ul>
+    <li>{{ num_posts }} blog posts,</li>
+    <li>{{ num_authors }} authors,</li>
+    <li>{{ num_comments }} comments.</li>
+</ul>
+</p>
+{% endblock content %}

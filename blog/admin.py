@@ -7,6 +7,7 @@ from .models import BlogPost, Comment, Author, AuthorBio
 class CommentInline(admin.TabularInline):
     model = Comment
     readonly_fields = ('pub_date',)
+    extra = 1
 
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
