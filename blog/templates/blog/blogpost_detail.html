@@ -4,6 +4,9 @@
 <h1>{{ blogpost.title }}</h1>
 <p>by {{ blogpost.author }} on {{ blogpost.pub_date }}</p>
 {{ blogpost.content }}
+{% endblock content %}
+
+{% block comments %}
 <h2>Comments:</h2>
 <ul>
     {% for com in blogpost.comment_set.all %}
@@ -15,4 +18,6 @@
     <li><p>No comments.</p></li>
     {% endfor %}
 </ul>
-{% endblock content %}
+<a href="{% url 'blog:comment_create' pk=blogpost.pk %}">Post comment</a>
+{% endblock comments %}
+

@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
+from django.views.generic import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 
 from .models import BlogPost, Author, Comment
 
@@ -30,3 +33,16 @@ class AuthorList(ListView):
 class AuthorDetail(DetailView):
     model = Author
     template_name = 'blog/author_detail.html'
+
+
+class CommentCreate(LoginRequiredMixin, CreateView):
+    model = Comment
+    fields = ('content',)
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.blogpost = BlogPost.objects.get(pk=self.kwargs['pk'])
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("blog:post_detail", args=[self.kwargs['pk']])
