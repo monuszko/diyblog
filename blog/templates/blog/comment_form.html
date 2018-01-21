@@ -3,6 +3,7 @@
 
 {% block content %}
 <h1>Post a comment</h1>
+<p><a href="{{ blogpost_link }}">(article)</a>
 <form action="" method="post">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Save" />

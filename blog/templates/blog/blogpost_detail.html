@@ -18,6 +18,10 @@
     <li><p>No comments.</p></li>
     {% endfor %}
 </ul>
-<a href="{% url 'blog:comment_create' pk=blogpost.pk %}">Post comment</a>
+{% if user.is_authenticated %}
+    <a href="{% url 'blog:comment_create' pk=blogpost.pk %}">Post comment</a>
+{% else %}
+    <a href="{% url 'login' %}?next={% url 'blog:comment_create' pk=blogpost.pk %}">Log in to comment</a>
+{% endif %}
 {% endblock comments %}
 
