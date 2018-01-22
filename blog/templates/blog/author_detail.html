@@ -6,7 +6,7 @@
 <h2>Bio:</h2>
 <p>
 {% if author.bio %}
-    {{ author.bio }}
+{{ author.bio|linebreaks }}
 {% else %}
     (not written)
 {% endif %}

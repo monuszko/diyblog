@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import BlogPost, Comment, Author, AuthorBio
+from .models import BlogPost, Comment, Author, Bio
 
 
 
@@ -16,8 +16,8 @@ class BlogPostAdmin(admin.ModelAdmin):
             ]
 
 
-class AuthorBioInline(admin.TabularInline):
-    model = AuthorBio
+class BioInline(admin.TabularInline):
+    model = Bio
 
 class BlogPostInline(admin.TabularInline):
     model = BlogPost
@@ -29,6 +29,6 @@ class BlogPostInline(admin.TabularInline):
 class AuthorAdmin(admin.ModelAdmin):
     fields = ('first_name', 'last_name', 'username', 'password', 'email', 'is_active')
     inlines = [
-            AuthorBioInline,
+            BioInline,
             BlogPostInline,
             ]

@@ -18,9 +18,12 @@ class Author(User):
         proxy = True
 
 
-class AuthorBio(models.Model):
+class Bio(models.Model):
     author = models.OneToOneField(Author, on_delete=models.CASCADE)
     content = models.TextField(max_length = 2000)
+
+    def __str__(self):
+        return self.content
 
 
 class BlogPost(models.Model):
