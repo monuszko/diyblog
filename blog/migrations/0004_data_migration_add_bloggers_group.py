@@ -2,6 +2,16 @@
 
 from django.db import migrations
 from django.contrib.auth.models import Group
+from django.contrib.auth.management import create_permissions
+
+
+def add_permissions(apps, schema_editor):
+    for app_config in apps.get_app_configs():
+        app_config.models_module = True
+        create_permissions(app_config, verbosity=0)
+        app_config.models_module = None
+
+
 
 
 def add_bloggers_group(apps, schema_editor):
@@ -22,5 +32,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunPython(add_permissions),
         migrations.RunPython(add_bloggers_group),
     ]

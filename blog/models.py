@@ -33,7 +33,7 @@ class BlogPost(models.Model):
     pub_date = models.DateTimeField(
             default=timezone.now,
             editable=False,
-            help_text="publication date")
+            verbose_name="publication date")
 
     def __str__(self):
         return self.title
@@ -52,7 +52,7 @@ class Comment(models.Model):
     pub_date = models.DateTimeField(
             default=timezone.now,
             editable=False,
-            help_text="publication date")
+            verbose_name="publication date")
 
     def __str__(self):
         return "{0} {1}".format(self.blogpost, self.author)
