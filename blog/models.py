@@ -20,17 +20,20 @@ class Author(User):
 
 class Bio(models.Model):
     author = models.OneToOneField(Author, on_delete=models.CASCADE)
-    content = models.TextField(max_length = 2000)
+    content = models.TextField(max_length=2000)
 
     def __str__(self):
-        return self.content
+        return self.author.username
 
 
 class BlogPost(models.Model):
     title = models.CharField(max_length=300)
     content = models.TextField(max_length=5000)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    pub_date = models.DateTimeField(default=timezone.now, editable=False)
+    pub_date = models.DateTimeField(
+            default=timezone.now,
+            editable=False,
+            help_text="publication date")
 
     def __str__(self):
         return self.title
@@ -46,7 +49,10 @@ class Comment(models.Model):
     blogpost = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
     content = models.TextField(max_length=1000)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    pub_date = models.DateTimeField(default=timezone.now, editable=False)
+    pub_date = models.DateTimeField(
+            default=timezone.now,
+            editable=False,
+            help_text="publication date")
 
     def __str__(self):
         return "{0} {1}".format(self.blogpost, self.author)
