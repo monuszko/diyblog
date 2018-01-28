@@ -57,6 +57,14 @@ class Comment(models.Model):
     def __str__(self):
         return "{0} {1}".format(self.blogpost, self.author)
 
+    def get_relative_url(self):
+        return "%s" % self.pk
+
+    def get_absolute_url(self):
+        return "{0}#{1}".format(
+                self.blogpost.get_absolute_url(),
+                self.get_relative_url())
+
     class Meta:
         ordering = ['pub_date']
 

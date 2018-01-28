@@ -11,6 +11,7 @@
 <ul>
     {% for com in blogpost.comment_set.all %}
     <li>
+        <p><a href="#{{ com.get_relative_url }}" id="{{ com.get_relative_url }}">#{{ com.get_relative_url }}</a></p>
         <p>{{ com.content }}</p>
         <p>{{ com.author }} on {{ com.pub_date }}</p>
     </li>
