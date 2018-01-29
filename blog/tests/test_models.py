@@ -11,6 +11,13 @@ class AuthorTest(TestCase):
     def setUpTestData(cls):
         factories.AuthorFactory()
 
+    def test_author_has_perms(self):
+        author = Author.objects.get(pk=1)
+
+        self.assertTrue(author.has_perm('blog.add_blogpost'))
+        self.assertTrue(author.has_perm('blog.change_blogpost'))
+        self.assertTrue(author.has_perm('blog.delete_blogpost'))
+
     def test_get_absolute_url(self):
         author = Author.objects.get(pk=1)
 
@@ -21,8 +28,8 @@ class BioTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        factories.AuthorFactory()
-        factories.BioFactory()
+        a = factories.AuthorFactory()
+        factories.BioFactory(author=a)
 
     def test_content_max_length(self):
         bio = Bio.objects.get(pk=1)
@@ -40,8 +47,8 @@ class BlogPostTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        factories.AuthorFactory()
-        factories.BlogPostFactory()
+        a = factories.AuthorFactory()
+        factories.BlogPostFactory(author=a)
 
     def test_pub_date_label(self):
         bp = BlogPost.objects.get(pk=1)
@@ -75,9 +82,9 @@ class CommentTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        factories.AuthorFactory()
-        factories.BlogPostFactory()
-        factories.CommentFactory()
+        a = factories.AuthorFactory()
+        b = factories.BlogPostFactory(author=a)
+        factories.CommentFactory(author=a, blogpost=b)
 
     def test_pub_date_label(self):
         com = Comment.objects.get(pk=1)

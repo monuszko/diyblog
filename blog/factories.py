@@ -13,13 +13,6 @@ TODAY = now()
 fake = Faker()
 
 
-# Caution: don't make more than Authors, because it's OneToOneField
-class BioFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = Bio
-
-    author = factory.Iterator(Author.objects.all())
-    content = factory.LazyFunction(lambda: '\n\n'.join(fake.paragraphs(nb=4))[:2000])
 
 
 class AuthorFactory(factory.django.DjangoModelFactory):
@@ -31,6 +24,15 @@ class AuthorFactory(factory.django.DjangoModelFactory):
     username = factory.Sequence(lambda n: "author%03d" % n)
 
 
+# Caution: don't make more than Authors, because it's OneToOneField
+class BioFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Bio
+
+    author = factory.SubFactory(AuthorFactory)
+    content = factory.LazyFunction(lambda: '\n\n'.join(fake.paragraphs(nb=4))[:2000])
+
+
 class BlogPostFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = BlogPost
@@ -39,7 +41,7 @@ class BlogPostFactory(factory.django.DjangoModelFactory):
             lambda: fake.sentence(nb_words=6, variable_nb_words=True)[:200])
     content = factory.LazyFunction(
             lambda: '\n\n'.join(fake.paragraphs(nb=14))[:5000])
-    author = factory.Iterator(Author.objects.all())
+    author = factory.SubFactory(AuthorFactory)
     pub_date = factory.LazyFunction(
             lambda: fake.past_datetime(start_date="-30d", tzinfo=TIMEZONE))
 
@@ -48,10 +50,10 @@ class CommentFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Comment
 
-    blogpost = factory.Iterator(BlogPost.objects.all())
+    blogpost = factory.SubFactory(BlogPostFactory)
     content = factory.LazyFunction(
             lambda: '\n\n'.join(fake.paragraphs(nb=3))[:2000])
-    author = factory.Iterator(Author.objects.all())
+    author = factory.SubFactory(AuthorFactory)
 
     # Comments must not be older than the article... but not in the future
     @factory.lazy_attribute
