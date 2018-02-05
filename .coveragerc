@@ -1,0 +1,7 @@
+[run]
+source = blog
+branch = True
+omit =
+    blog/migrations/*
+    */test_*
+    *__init__.py
