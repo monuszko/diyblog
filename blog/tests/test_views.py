@@ -3,22 +3,30 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 
 from blog import factories
-from blog.models import BlogPost
+from blog.models import BlogPost, Comment, Author, Bio
 
 
 class IndexViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        blogposts = []
         for anum in range(13):
-            a = factories.AuthorFactory()
-            factories.BioFactory(author=a)
-            for bpnum in range(19):
-                bp = factories.BlogPostFactory(author=a)
+            au = factories.AuthorFactory()
+            by_author = factories.BlogPostFactory.build_batch(19, author=au)
+            blogposts.extend(by_author)
+        BlogPost.objects.bulk_create(blogposts)
 
+        authors = Author.objects.all()
+        bios = [factories.BioFactory.build(author=au) for au in authors]
+        Bio.objects.bulk_create(bios)
+
+        comments = []
         for u in User.objects.all():
             for bp in BlogPost.objects.all():
-                factories.CommentFactory(author=u, blogpost=bp)
+                c = factories.CommentFactory.build(author=u, blogpost=bp)
+                comments.append(c)
+        Comment.objects.bulk_create(comments)
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/blog/bloggers/')
@@ -39,11 +47,17 @@ class BlogPostListTests(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        blogposts = []
+        bios = []
         for anum in range(13):
             a = factories.AuthorFactory()
-            factories.BioFactory(author=a)
-            for bpnum in range(19):
-                bp = factories.BlogPostFactory(author=a)
+            bios.append(factories.BioFactory.build(author=a))
+            by_author = factories.BlogPostFactory.build_batch(19, author=a)
+            blogposts.extend(by_author)
+
+        Bio.objects.bulk_create(bios)
+        BlogPost.objects.bulk_create(blogposts)
+
 
     def test_view_exists_at_desired_location(self):
         resp = self.client.get('/blog/posts/')
@@ -59,15 +73,23 @@ class BlogPostDetailTests(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        bios = []
+        blogposts = []
         for anum in range(13):
             a = factories.AuthorFactory()
-            factories.BioFactory(author=a)
-            for bpnum in range(19):
-                bp = factories.BlogPostFactory(author=a)
+            bios.append(factories.BioFactory.build(author=a))
 
+            by_author = factories.BlogPostFactory.build_batch(19, author=a)
+            blogposts.extend(by_author)
+        Bio.objects.bulk_create(bios)
+        BlogPost.objects.bulk_create(blogposts)
+
+        comments = []
         for u in User.objects.all():
             for bp in BlogPost.objects.all():
-                factories.CommentFactory(author=u, blogpost=bp)
+                com = factories.CommentFactory.build(author=u, blogpost=bp)
+                comments.append(com)
+        Comment.objects.bulk_create(comments)
 
     def test_view_exists_at_desired_location(self):
         resp = self.client.get('/blog/3/')
@@ -82,9 +104,11 @@ class AuthorListTests(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        bios = []
         for anum in range(13):
             a = factories.AuthorFactory()
-            factories.BioFactory(author=a)
+            bios.append(factories.BioFactory.build(author=a))
+        Bio.objects.bulk_create(bios)
 
     def test_view_exists_at_desired_location(self):
         resp = self.client.get('/blog/bloggers/')
@@ -99,11 +123,15 @@ class AuthorDetailTests(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        bios = []
+        blogposts = []
         for anum in range(13):
             a = factories.AuthorFactory()
-            factories.BioFactory(author=a)
-            for bpnum in range(19):
-                bp = factories.BlogPostFactory(author=a)
+            bios.append(factories.BioFactory.build(author=a))
+            by_author = factories.BlogPostFactory.build_batch(19, author=a)
+            blogposts.extend(by_author)
+        Bio.objects.bulk_create(bios)
+        BlogPost.objects.bulk_create(blogposts)
 
     def test_view_exists_at_desired_location(self):
         resp = self.client.get('/blog/blogger/4/')
