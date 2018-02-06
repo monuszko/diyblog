@@ -1,8 +1,11 @@
 Django==2.0.1
 Faker==0.8.10
 coverage==4.5
+dj-database-url==0.4.2
 factory-boy==2.9.2
+gunicorn==19.7.1
 python-dateutil==2.6.1
 pytz==2017.3
 six==1.11.0
 text-unidecode==1.1
+whitenoise==3.3.1
