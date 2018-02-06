@@ -50,5 +50,6 @@ class CommentCreate(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # not reusing get_success_url because it might change in the future
-        context['blog_link'] = reverse("blog:post_detail", args=[self.kwargs['pk']])
+        context['blog_link'] = reverse("blog:post_detail",
+                                       args=[self.kwargs['pk']])
         return context

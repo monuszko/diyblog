@@ -13,8 +13,6 @@ TODAY = now()
 fake = Faker()
 
 
-
-
 class AuthorFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Author
@@ -30,7 +28,8 @@ class BioFactory(factory.django.DjangoModelFactory):
         model = Bio
 
     author = factory.SubFactory(AuthorFactory)
-    content = factory.LazyFunction(lambda: '\n\n'.join(fake.paragraphs(nb=4))[:2000])
+    content = factory.LazyFunction(lambda: '\n\n'.join(
+        fake.paragraphs(nb=4))[:2000])
 
 
 class BlogPostFactory(factory.django.DjangoModelFactory):
@@ -38,12 +37,12 @@ class BlogPostFactory(factory.django.DjangoModelFactory):
         model = BlogPost
 
     title = factory.LazyFunction(
-            lambda: fake.sentence(nb_words=6, variable_nb_words=True)[:200])
+        lambda: fake.sentence(nb_words=6, variable_nb_words=True)[:200])
     content = factory.LazyFunction(
-            lambda: '\n\n'.join(fake.paragraphs(nb=14))[:5000])
+        lambda: '\n\n'.join(fake.paragraphs(nb=14))[:5000])
     author = factory.SubFactory(AuthorFactory)
     pub_date = factory.LazyFunction(
-            lambda: fake.past_datetime(start_date="-30d", tzinfo=TIMEZONE))
+        lambda: fake.past_datetime(start_date="-30d", tzinfo=TIMEZONE))
 
 
 class CommentFactory(factory.django.DjangoModelFactory):
@@ -52,7 +51,7 @@ class CommentFactory(factory.django.DjangoModelFactory):
 
     blogpost = factory.SubFactory(BlogPostFactory)
     content = factory.LazyFunction(
-            lambda: '\n\n'.join(fake.paragraphs(nb=3))[:2000])
+        lambda: '\n\n'.join(fake.paragraphs(nb=3))[:2000])
     author = factory.SubFactory(AuthorFactory)
 
     # Comments must not be older than the article... but not in the future

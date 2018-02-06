@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save 
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import Group
 from .models import Author
@@ -10,4 +10,3 @@ def add_blogging_permission(sender, **kwargs):
         user = kwargs['instance']
         group = Group.objects.get(name='Bloggers')
         user.groups.add(group)
-
