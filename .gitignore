@@ -1,8 +1,6 @@
 *.swp
 *.pyc
 
-diyblog/*
-
 db.sqlite3
 .coverage
 README.html
